@@ -16,10 +16,15 @@ library(dplyr)
 library(knitr)
 unique(univoltine_butterfly$sex)
 summary(univoltine_butterfly$sex)
-sum(is.Females(univoltine_butterfly$sex))
+sum(is.na(univoltine_butterfly$sex))
 univoltine_butterfly <- univoltine_butterfly %>%
+  mutate("Females") 
   mutate_at(c("sex"), ~replace_Females(.,"Female"))
+  
 
+# comparing groups
+univoltine_butterfly %>%
+  group_by()
 
 
 
