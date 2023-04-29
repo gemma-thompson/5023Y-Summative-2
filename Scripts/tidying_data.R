@@ -40,6 +40,10 @@ univoltine_butterfly %>%
   is.na() %>%
   sum()
 
+# showing all the data 
+univoltine_butterfly %>%
+  print(n= 58)
+
 # quick summary 
 summary(univoltine_butterfly)
 
