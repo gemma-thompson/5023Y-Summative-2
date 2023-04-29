@@ -7,3 +7,8 @@
 
 #Through the use of different graphs i aim to clearly show whether either sex or age has the most affect on 
 #forewing_length during the rain in June
+
+#In the linear_models script different statistical analysis tests are performed, i have set out a hypothesis and 
+#a null hypothesis in order to see then which the data supports through these tests. 
+#Hypothesis: 
+#Null Hypothesis: 
