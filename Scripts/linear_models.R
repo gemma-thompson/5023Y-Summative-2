@@ -15,6 +15,7 @@ univoltine_butterfly %>%
   group_by(rain_jun) %>%
   summarise(mean=mean(rain_jun)) %>%
   print(n= 42)
+#
 
 summary(lsmodel1)
 
@@ -55,3 +56,12 @@ performance::check_model(lsmodel1)
 performance::check_model(lsmodel1, check = c("normality", "qq"))
 plot(lsmodel1, which=c(2,2))
 
+plot(lsmodel1, which=c(1,3))
+
+#outliers
+performance::check_model(lsmodel1, check="outliers")
+
+plot(lsmodel1, which=c(4,4))
+
+
+               
