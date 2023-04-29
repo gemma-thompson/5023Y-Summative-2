@@ -6,6 +6,7 @@ library(dplyr)
 library(knitr)
 library(here)
 library (kableExtra)
+library(tidyr)
 
 # exploring the data further than just the basic tidying allows us to visualize it
 
@@ -80,10 +81,8 @@ ggplot(data = univoltine_butterfly, aes(x = sex, y = rain_jun)) +
 #Female, Females and are now correctly Male and Female. 
 
 #Differences and uncertainty in the data
-#
-univoltine_butterfly_wide <- univoltine_butterfly %>%
-  pivot_wider(names_from = forewing_length, values_from = rain) %>%
-  mutate(difference = forewing_length -rain_jun)
+
+
 
 
 
