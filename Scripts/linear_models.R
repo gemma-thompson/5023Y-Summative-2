@@ -4,17 +4,18 @@ library(emmeans)
 library(performance)
 library(emmeans)
 
-lsmodel0 <- lm(formula = rain_jun ~ 1, data = univoltine_butterfly)
-mean(univoltine_butterfly$rain_jun)
+lsmodel0 <- lm(formula = forewing_length ~ 1, data = univoltine_butterfly)
+summary(lsmodel0)
+mean(univoltine_butterfly$forewing_length)
+#
 
-lsmodel1 <- lm(forewing_length ~ rain_jun, data = univoltine_butterfly)
+lsmodel1 <- lm(forewing_length ~ sex, data = univoltine_butterfly)
 broom::tidy(lsmodel1)
 # Due to the fact that the second row shows a negative value it means that it refers to the
 #difference in the mean of the two groups
 univoltine_butterfly %>%
-  group_by(rain_jun) %>%
-  summarise(mean=mean(rain_jun)) %>%
-  print(n= 42)
+  group_by(sex) %>%
+  summarise(mean=mean(forewing_length)) %>%
 #
 
 summary(lsmodel1)
@@ -25,16 +26,16 @@ summary(lsmodel1)
 broom::tidy(lsmodel1, conf.int=T)
 GGally::ggcoef_model(lsmodel1,
                      show_p_values = FALSE,
-                     conf.level = 0.95)
-#The original hypothesis is that 
+                     conf.level = 0.70)
+#The original hypothesis is that rain will have an effect on butterfly length 
 
 broom::tidy(lsmodel1, conf.int = T, conf.level = 0.99)
 #
 
-means <- emmeans::emmeans(lsmodel1, specs = ~ rain_jun)
+means <- emmeans::emmeans(lsmodel1, specs = ~ forewing_length)
 means %>%
   as_tibble() %>%
-  ggplot(aes(x=rain_jun,
+  ggplot(aes(x=forewing_length,
              y=emmean))+
   geom_pointrange(aes(
     ymin=lower.CL,
