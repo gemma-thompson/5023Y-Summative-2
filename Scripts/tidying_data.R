@@ -1,5 +1,6 @@
 library(tidyverse)
 library(here)
+library(janitor)
 
 # checking data is presented in a tidy format 
 head(univoltine_butterfly)
@@ -49,4 +50,6 @@ summary(univoltine_butterfly)
 
 # The point of tidying the data set is to make sure that all the data is presented in a way that is readable and clear to be able to then be presented in a variety of graph formats 
 # It also gives us an analysis of the data that we are dealing with and how it is formatted 
- 
+
+
+
