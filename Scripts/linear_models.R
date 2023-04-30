@@ -65,8 +65,10 @@ plot(lsmodel1, which=c(1,3))
 #outliers
 performance::check_model(lsmodel1, check="outliers")
 
-#Cooks distance graph - Cooks distance is a measure of 
+#Cooks distance graph - Cooks distance is a measure of how much 'leverage' a single data point exerts on the model,
+#if too high then it is having an outsized effect on the estimates
 plot(lsmodel1, which=c(4,4))
+#this shows that there are three main outliers that have been highlighted with numbers above them 
 
 
 
