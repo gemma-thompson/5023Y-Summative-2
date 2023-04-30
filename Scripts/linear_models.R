@@ -18,22 +18,15 @@ univoltine_butterfly %>%
 #
 
 summary(lsmodel1)
-
-univolutine_butterfly %>%
-  ggplot(aes(x=forewing_length,
-             y=rain_jun,
-             colour=forewing_length))+
-  geom_jitter(aplha=0.5,
-              width=0.1)+
-  stat_summary(fun=mean,
-               size=1.2)+
-  theme_bw()
+#From this summary we can take that the the standard error or rain_jun is 0.143941
+#and the standard error difference is 0.001527. The estimate of the intercept mean  
+#is 13.723480 
 
 broom::tidy(lsmodel1, conf.int=T)
 GGally::ggcoef_model(lsmodel1,
                      show_p_values = FALSE,
                      conf.level = 0.95)
-#
+#The original hypothesis is that 
 
 broom::tidy(lsmodel1, conf.int = T, conf.level = 0.99)
 #
@@ -62,6 +55,7 @@ plot(lsmodel1, which=c(1,3))
 performance::check_model(lsmodel1, check="outliers")
 
 plot(lsmodel1, which=c(4,4))
+
 
 
                
