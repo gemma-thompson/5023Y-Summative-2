@@ -1,0 +1,18 @@
+---
+title: "univoltine_butterfly_Rmd"
+output: html_document
+date: "2023-04-30"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r univoltine_butterfly}
+view(univoltine_butterfly)
+
+library(ggplot2)
+ggplot(data=univoltine_butterfly, aes(forewing_length))+
+  geom_density(aes(colour=sex)) + xlab("sex")+
+  ggtitle("The length of male and female butterfly wings")+
+  scale_colour_manual(values=c("#a4c639", "#E69F00", "#e32636", "#0000FF"))
