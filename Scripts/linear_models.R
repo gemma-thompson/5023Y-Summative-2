@@ -23,15 +23,19 @@ summary(lsmodel1)
 #and the standard error difference is 0.001527. The estimate of the intercept mean  
 #is 13.723480 
 
+#The hypothesis i am creating is that sex does change the length of the butterfly wings
+#The null hypothesis is that sex does not change the length of the butterfly wings 
 broom::tidy(lsmodel1, conf.int=T)
 GGally::ggcoef_model(lsmodel1,
                      show_p_values = FALSE,
                      conf.level = 0.70)
-#The original hypothesis is that rain will have an effect on butterfly length 
-
+#This graph shows that the upper and lower bounds of the confidence intervals don't cross 
+#zero, the difference in butterfly length is consistent. We can accept the hypothesis which means
+#that can we reject the null hypothesis
+ 
 broom::tidy(lsmodel1, conf.int = T, conf.level = 0.99)
-#
 
+#argument to support this
 means <- emmeans::emmeans(lsmodel1, specs = ~ forewing_length)
 means %>%
   as_tibble() %>%
@@ -43,18 +47,25 @@ means %>%
   ))
 #
 
-#Assumption checking
+#Assumption checking - check the assumptions of the model are adequately met so we know
+#if analysis can be trusted. 
 performance::check_model(lsmodel1)
 
 #Normal distribution
+#checking whether the residual in the data is approximately normally distributed  
 performance::check_model(lsmodel1, check = c("normality", "qq"))
 plot(lsmodel1, which=c(2,2))
 
+#Quantile-Quantile plot
 plot(lsmodel1, which=c(1,3))
+#the y axis is showing the distribution of the data and the x-axis is showing a theoretical normal 
+#distribution.They are the same values and they meet proving that the data follows a normal distribution
+#as they form a line across the middle of the plot.
 
 #outliers
 performance::check_model(lsmodel1, check="outliers")
 
+#Cooks distance graph - Cooks distance is a measure of 
 plot(lsmodel1, which=c(4,4))
 
 
