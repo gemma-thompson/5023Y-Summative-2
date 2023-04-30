@@ -8,11 +8,29 @@ date: "2023-04-30"
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r univoltine_butterfly}
+```{r}
+library(tidyverse)
+library(tidyr)
+library(readr)
+library(ggplot2)
+library(dplyr)
+library(knitr)
+ggplot(data=univoltine_butterfly,
+       aes(forewing_length, rain_jun))+
+  geom_boxplot(aes(colour=sex))+
+  ggtitle ("The length of male and female butterly wings during the rain in June")+
+  labs(y = "forewing_length", x = "rain_jun")
+```
+
+##R markdown
+This plot shows that the length of male and female wings in June is realtivley similar to each other shown by box plot graph displayed 
+
+```{r univolutine_butterfly}
 view(univoltine_butterfly)
 
 library(ggplot2)
-ggplot(data=univoltine_butterfly, aes(forewing_length))+
-  geom_density(aes(colour=sex)) + xlab("sex")+
-  ggtitle("The length of male and female butterfly wings")+
-  scale_colour_manual(values=c("#a4c639", "#E69F00", "#e32636", "#0000FF"))
+ggplot(data=univoltine_butterfly, aes(year))+
+  geom_density(aes(colour=sex))+ xlab("sex")
++ ggtitle("The year male and female butterflies were born")+
+  scale_colour_manual(values=c"#0000FF", "#E69F00")
+```
