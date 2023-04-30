@@ -76,4 +76,5 @@ plot(lsmodel1, which=c(4,4))
 
 
 
+
                
