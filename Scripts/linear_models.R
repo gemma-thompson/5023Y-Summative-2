@@ -62,13 +62,17 @@ plot(lsmodel1, which=c(1,3))
 #distribution.They are the same values and they meet proving that the data follows a normal distribution
 #as they form a line across the middle of the plot.
 
+plot(lsmodel1, which=c(1,3))
+
 #outliers
 performance::check_model(lsmodel1, check="outliers")
+#the outliers are potentially affecting estimates of error that can be made from the data
 
 #Cooks distance graph - Cooks distance is a measure of how much 'leverage' a single data point exerts on the model,
 #if too high then it is having an outsized effect on the estimates
 plot(lsmodel1, which=c(4,4))
-#this shows that there are three main outliers that have been highlighted with numbers above them 
+#this shows that there are three main outliers that have been highlighted with numbers above them - these are influential 
+#data points 
 
 
 
