@@ -15,6 +15,9 @@ library(readr)
 library(ggplot2)
 library(dplyr)
 library(knitr)
+```
+
+```{r}
 ggplot(data=univoltine_butterfly,
        aes(forewing_length, rain_jun))+
   geom_boxplot(aes(colour=sex))+
@@ -23,15 +26,25 @@ ggplot(data=univoltine_butterfly,
 ```
 
 ##R markdown
-This plot shows that the length of male and female wings in June is realtivley similar to each other shown by box plot graph displayed 
+This plot shows that the length of male and female wings in June is realtivley similar to each other shown by box plot graph displayed meaning the rainfall affects male and females the same 
 
-```{r univolutine_butterfly}
-view(univoltine_butterfly)
-
-library(ggplot2)
-ggplot(data=univoltine_butterfly, aes(year))+
-  geom_density(aes(colour=sex))+ xlab("sex")
-+ ggtitle("The year male and female butterflies were born")+
-  scale_colour_manual(values=c"#0000FF", "#E69F00")
+```{r plot 1}
+ggplot(univoltine_butterfly,
+       aes(x=jun_mean,
+           colour=sex))+
+  geom_density(
+    alpha=0.7)+
+  labs(y = "Density",
+       x = "Mean temperature in June",
+       title = "Male and female butterflies in different temperatures in June")+
+  scale_colour_manual(
+    values = c("#117733",
+               "#332288",
+               "#CC6677"))+
+  theme_classic()+
+  theme(legend.position = "right")
 ```
+
+##R Markdown
+This plot shows that there is a higher density of 
 
