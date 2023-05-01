@@ -46,5 +46,6 @@ ggplot(univoltine_butterfly,
 ```
 
 ##R Markdown
-This plot shows that there is a higher density of 
+This plot shows that there is a higher density of of females around the temperatures of 14 - 15.5 celsius 
+
 
