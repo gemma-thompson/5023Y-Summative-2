@@ -15,6 +15,7 @@ library(readr)
 library(ggplot2)
 library(dplyr)
 library(knitr)
+library(ggpubr)
 ```
 
 ```{r plot 1}
@@ -22,11 +23,12 @@ ggplot(data=univoltine_butterfly,
        aes(forewing_length, rain_jun))+
   geom_boxplot(aes(colour=sex))+
   ggtitle ("The length of male and female butterly wings during the rain in June")+
-  labs(y = "forewing_length", x = "rain_jun")
+  labs(y = "Forewing Length", x = "Rain in June")+
+  theme(title = element_text(size=7))
 ```
 
 ##R markdown
-This plot shows that the length of male and female wings in June is realtivley similar to each other shown by box plot graph displayed meaning the rainfall affects male and females the same 
+This plot shows that the length of male and female wings in June is realtivley similar to each other shown by box plot graph displayed. Males have slightly higher 
 
 ```{r plot 2}
 ggplot(univoltine_butterfly,
@@ -42,21 +44,29 @@ ggplot(univoltine_butterfly,
                "#332288",
                "#CC6677"))+
   theme_classic()+
-  theme(legend.position = "right")
+  theme(legend.position = "right")+
+  theme(title = element_text(size = 7))
 ```
 
 ##R Markdown
-This plot shows that there is a higher density of of females around the temperatures of 14 - 15.5 Celsius. This data shows that at higher temperatures there are more females than males but as the temperature decreases they are relatively similar 
+This plot shows that there is a higher density of of females around the temperatures of 14 - 15.5 Celsius. This data shows that at higher temperatures there are more females than males but as the temperature decreases they are relatively similar
 
 ```{r plot 3}
 ggplot(univoltine_butterfly,
        aes(x = jun_mean,
            y = rain_jun,
-           fill = sex))+
-  labs(y = "rain_jun",
-       x = "jun_mean",
-       title = "How male and female butterflies were affected ny rain and tempratures in June")+
-       scale_fill_manual(values = c("#117733",
-                                    "#332288"))
+           colour = sex))+
+  geom_point()+
+  labs(x = "Mean June Temperature",
+       y = "Rain in June",
+       title = "How the mean temperature in June affects rainfall for male and female butterflies")+
+  scale_colour_manual(values = c("#CC6677",
+                                 "#332288"))+
+  theme(title = element_text(size = 6))+
+  stat_cor(method="pearson", aes(colour=sex))
 ```
+ ##R Markdown 
+ This plot shows the 
+  
+  
 
