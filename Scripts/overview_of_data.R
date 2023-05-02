@@ -17,3 +17,7 @@
 #The idea behind plotting the graphs in the linear_models script and exploratory_data_analysis script is to get a better
 #understanding of the data that i am working with to then be able to build a hypothesis and null hypothesis for my R markdown
 #file. 
+
+#When completing my R Markdown document the hypothesis i am going to be investigating is:
+#Does the temperature and rainfall in the month of June over period of 1880 - 1973 have an 
+#on the forewing length of both male and female butterflies?
