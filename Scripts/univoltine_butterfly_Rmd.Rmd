@@ -60,13 +60,28 @@ ggplot(univoltine_butterfly,
   labs(x = "Mean June Temperature",
        y = "Rain in June",
        title = "How the mean temperature in June affects rainfall for male and female butterflies")+
-  scale_colour_manual(values = c("#CC6677",
-                                 "#332288"))+
+  scale_colour_manual(values = c("#CC6677",                                 "#332288"))+
   theme(title = element_text(size = 6))+
   stat_cor(method="pearson", aes(colour=sex))
 ```
  ##R Markdown 
- This plot shows the 
+This plot shows how the temperature in June affects the rainfall in June for male and female butterflies. Both the R values are negative indicating a negative correlation, meaning the values of one variable increase when the values of the other variable decrease. Both R values are close to zero, females have a closer R value to zero than the males do with an R value of -0.12, compared to the males who's R value is -0.31 meaning females have a weaker linear relationship than the male butterflies do. The p value gives a further understanding as to whether we can conclude that the correlation coefficient is different from zero, and from what we can observe the female butterflies has the furtherst away value from zero. 
+
+```{r plot 4}
+ggplot(univoltine_butterfly)+
+  geom_smooth(aes(x = jun_mean,
+           y = forewing_length,
+           colour = sex))+
+  labs(y = "Forewing Length",
+       x = "Mean temperature in June",
+       title = "Identifying how the mean temperature in June affects forewing length in male and female butterflies")+
+  scale_colour_manual(
+    values = c("#117733",
+               "#332288"))+
+  theme(title = element_text(size = 4))
+``` 
+##R Markdowm
+This graph shows the relationship between the mean temperature in June and the forewing length of male and female butterflies. Visually the graph shows that as mean temperature increases the forewing length of both male and female butterflies also 
   
   
 
