@@ -16,6 +16,7 @@ library(ggplot2)
 library(dplyr)
 library(knitr)
 library(ggpubr)
+library(patchwork)
 ```
 
 ```{r plot 1}
@@ -27,8 +28,7 @@ ggplot(data=univoltine_butterfly,
   theme(title = element_text(size=7))
 ```
 
-##R markdown
-This plot shows that the length of male and female wings in June is realtivley similar to each other shown by box plot graph displayed. Males have slightly higher 
+This plot shows that the length of male and female wings in June is realtivley similar to each other shown by box plot graph displayed. Males have slightly higher
 
 ```{r plot 2}
 ggplot(univoltine_butterfly,
@@ -48,7 +48,6 @@ ggplot(univoltine_butterfly,
   theme(title = element_text(size = 7))
 ```
 
-##R Markdown
 This plot shows that there is a higher density of of females around the temperatures of 14 - 15.5 Celsius. This data shows that at higher temperatures there are more females than males but as the temperature decreases they are relatively similar
 
 ```{r plot 3}
@@ -60,12 +59,12 @@ ggplot(univoltine_butterfly,
   labs(x = "Mean June Temperature",
        y = "Rain in June",
        title = "How the mean temperature in June affects rainfall for male and female butterflies")+
-  scale_colour_manual(values = c("#CC6677",                                 "#332288"))+
+  scale_colour_manual(values = c("#CC6677",                               "#332288"))+
   theme(title = element_text(size = 6))+
   stat_cor(method="pearson", aes(colour=sex))
 ```
- ##R Markdown 
-This plot shows how the temperature in June affects the rainfall in June for male and female butterflies. Both the R values are negative indicating a negative correlation, meaning the values of one variable increase when the values of the other variable decrease. Both R values are close to zero, females have a closer R value to zero than the males do with an R value of -0.12, compared to the males who's R value is -0.31 meaning females have a weaker linear relationship than the male butterflies do. The p value gives a further understanding as to whether we can conclude that the correlation coefficient is different from zero, and from what we can observe the female butterflies has the furtherst away value from zero. 
+
+This plot shows how the temperature in June affects the rainfall in June for male and female butterflies. Both the R values are negative indicating a negative correlation, meaning the values of one variable increase when the values of the other variable decrease. Both R values are close to zero, females have a closer R value to zero than the males do with an R value of -0.12, compared to the males who's R value is -0.31 meaning females have a weaker linear relationship than the male butterflies do. The p value gives a further understanding as to whether we can conclude that the correlation coefficient is different from zero, and from what we can observe the female butterflies has the furtherst away value from zero.
 
 ```{r plot 4}
 ggplot(univoltine_butterfly)+
@@ -79,9 +78,38 @@ ggplot(univoltine_butterfly)+
     values = c("#117733",
                "#332288"))+
   theme(title = element_text(size = 4))
-``` 
-##R Markdowm
-This graph shows the relationship between the mean temperature in June and the forewing length of male and female butterflies. Visually the graph shows that as mean temperature increases the forewing length of both male and female butterflies also 
-  
-  
+```
 
+
+This graph shows the relationship between the mean temperature in June and the forewing length of male and female butterflies. Visually the graph shows that as mean temperature increases the forewing length of both male and female butterflies. As the temperature reaches around 15 degrees, it continues increase for males but for females we can see where it starts to decrease.
+
+```{r plot 5}
+ggplot(univoltine_butterfly)+
+  geom_col(aes(x = year,
+           y = forewing_length,
+           colour = sex))+
+  labs(y = "Forewing Length",
+       x = "Year",
+       title = "Looking at the forewing length of male and female butterflies across period of 1880-1973")+
+  scale_colour_manual(
+    values = c("#117733",
+               "#CC6677"))+
+  theme(title = element_text(size = 5))
+```
+This graph shows that the forewing length of females is much longer than males and the data stays relatively consistent despite the fact that there is a distance of 100 years between the start and the end, this means that overall females have longer forewing length to males and it stayed consistent for 100 years, despite biological concepts such as evolution that would have taken place. 
+
+```{r plot 6}
+univoltine_butterfly %>%
+  ggplot(aes(x = year,
+             y = rain_jun,
+             colour = sex))+
+  geom_point()+
+  geom_smooth(method="lm",
+              se = FALSE)+
+  labs(x = "Year",
+       y = "Rain in June",
+       title = "How the rainfall in June changes over the period of 1880- 1975")+
+  theme(title = element_text(size = 7))+
+  facet_wrap(~sex)
+```
+This graph shows that the female butterflies shows a bigger decreaase 
