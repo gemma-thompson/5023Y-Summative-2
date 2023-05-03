@@ -19,5 +19,8 @@
 #file. 
 
 #When completing my R Markdown document the hypothesis i am going to be investigating is:
-#Does the temperature and rainfall in the month of June over period of 1880 - 1973 have an 
+#Does the temperature and rainfall in the month of June over period of 1906 - 1973 have an effect
 #on the forewing length of both male and female butterflies?
+#Null Hypothesis
+#The temperature and the rainfall in the month of June over period of 1906 - 1973 don't have an effect 
+#on the forewing length of both male and female butterflies 
