@@ -1,6 +1,7 @@
 ---
 title: "univoltine_butterfly_Rmd"
-output: html_document
+output:
+  html_document: default
 date: "2023-04-30"
 ---
 
@@ -20,15 +21,15 @@ library(patchwork)
 ```
 
 ```{r plot 1}
-ggplot(data=univoltine_butterfly,
+ggplot(univoltine_butterfly,
        aes(forewing_length, rain_jun))+
   geom_boxplot(aes(colour=sex))+
-  ggtitle ("The length of male and female butterly wings during the rain in June")+
+  ggtitle ("The length of male and female butterfly forewings during the rain in June")+
   labs(y = "Forewing Length", x = "Rain in June")+
   theme(title = element_text(size=7))
 ```
 
-This plot shows that the length of male and female wings in June is realtivley similar to each other shown by box plot graph displayed. Males have slightly higher
+This plot shows the length of male and female forewings in June is realtivley similar to each other shown by box plot graph displayed. Looking at the mean values we can see that females have a slightly forewing length of around 55mm, male butterfies being slightly shorter with a value of 50mm. 
 
 ```{r plot 2}
 ggplot(univoltine_butterfly,
@@ -48,7 +49,7 @@ ggplot(univoltine_butterfly,
   theme(title = element_text(size = 7))
 ```
 
-This plot shows that there is a higher density of of females around the temperatures of 14 - 15.5 Celsius. This data shows that at higher temperatures there are more females than males but as the temperature decreases they are relatively similar
+This plot shows the density of male and female butterflies in the month of June. It shows that at temperatures around 12-14 degrees Celsius there are more male butterflies providing data of forewing length, but then at around 14-15.5 degrees Celsius there are nearly double the amount of female to male butterflies. As the temperature then drops to 16 degrees Celsius the number of male butterflies increases.
 
 ```{r plot 3}
 ggplot(univoltine_butterfly,
@@ -79,7 +80,6 @@ ggplot(univoltine_butterfly)+
                "#332288"))+
   theme(title = element_text(size = 4))
 ```
-
 
 This graph shows the relationship between the mean temperature in June and the forewing length of male and female butterflies. Visually the graph shows that as mean temperature increases the forewing length of both male and female butterflies. As the temperature reaches around 15 degrees, it continues increase for males but for females we can see where it starts to decrease.
 
@@ -112,4 +112,4 @@ univoltine_butterfly %>%
   theme(title = element_text(size = 7))+
   facet_wrap(~sex)
 ```
-This graph shows that the female butterflies shows a bigger decreaase 
+This graph shows that the female butterflies shows a bigger decrease 
