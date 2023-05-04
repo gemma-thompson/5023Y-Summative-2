@@ -2,7 +2,6 @@ library(tidyverse)
 library(GGally)
 library(emmeans)
 library(performance)
-library(emmeans)
 
 lsmodel0 <- lm(formula = forewing_length ~ 1, data = univoltine_butterfly)
 summary(lsmodel0)
