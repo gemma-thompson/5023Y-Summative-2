@@ -1,0 +1,56 @@
+---
+title: "README"
+output: html_document
+date: "2023-05-03"
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+This project is about male and female butterflies taken over the years
+of 1880 - 1973 from museums. This data was alongside the average
+temperature and rainfall in the month of June data.
+
+The first thing that i decided to do was create a script to tidy the
+data. This included a variety of code to make sure that the data had no
+missing values, checked for no NA values, cleaned column names, and
+individually looked at the different columns to check that the data
+overall didnt have missing values. I finished this off using the quick
+summary function to do an overall check on the data. The packages that i
+used for this were: library(tidyverse) library(here) library(janitor)
+
+Next i created an exploratory data analysis script. I visuliaed the data
+by looking at the sex of the butterflies with all the numerical dats:
+year, forewing lenthg, mean temperature in June and rainfall in June.
+After creating my first graph (looking at the realtionship between sex
+and year) i realised that there were 4 valuables in the sex column when
+i actually only wanted two, so this enabled me to then be able to fix
+this so it changed from: "Maes", "Males", "Female", "Females" to just
+"Male" and "Female". I then continued to create the other graphs to look
+for differences and uncertainty in the data. The other that i came
+across was the outlier data value in the forewing length column of
+577.0, so i removed this row from my data in order to remove the
+anomoly. The packages that i used for this were: library (tidyverse)
+library(tidyr) library(readr) library(ggplot2) library(dplyr)
+library(knitr) library(here) library(kableExtra)
+
+After this i created a linear models script. i created lsmodel1 which is
+looking at two different data sets that directly relate to the
+butterflies: sex and forewing length. I used a variety of functions such
+as broom::tidy, performance::check_model, emmeans and summary to look
+more closely at this data and created graphs such as the
+Quantile-Qunatile plot and Cooks distance to check that outliers no
+longer existed after i had explored it. This once again, gave me a
+better insight into the data that i was working with. The packages that
+i used were: library(tidyverse) library(GGally) library(emmeans)
+library(performance)
+
+Using all three scripts and analysing the data i used these graphs to
+create a hypothesis for my Markdown file. Hypothesis: The temperature
+and rainfall doesn't have an effect on the forewing length of male and female butterflies.
+The null hypothesis goes against this and states that:
+the temperature and rainfall has an effect on the forewing length of male and female butterflies.
+
+
+
+
