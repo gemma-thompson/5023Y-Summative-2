@@ -6,7 +6,6 @@ library(dplyr)
 library(knitr)
 library(here)
 library (kableExtra)
-library(tidyr)
 
 # exploring the data further than just the basic tidying allows us to visualize it
 
@@ -49,6 +48,12 @@ univoltine_butterfly %>%
              y=forewing_length))+
   geom_pointrange(data = summary, aes(ymin=forewing_length-sd, ymax=forewing_length+sd))+
   theme_bw()
+#In the forewing_length data there is an outlier that will affect graphs in my R.Markdown file as an anomaly data point is 
+#577.0 
+#To remove anomaly 
+univoltine_butterfly <- 
+  univoltine_butterfly %>% 
+  filter(rain_jun < 200)
 
 # the kable extra functions makes a nicer table 
 univoltine_butterfly %>%
