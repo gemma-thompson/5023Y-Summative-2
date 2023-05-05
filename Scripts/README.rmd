@@ -47,10 +47,7 @@ library(performance)
 
 Using all three scripts and analysing the data i used these graphs to
 create a hypothesis for my Markdown file. Hypothesis: The temperature
-and rainfall doesn't have an effect on the forewing length of male and female butterflies.
-The null hypothesis goes against this and states that:
-the temperature and rainfall has an effect on the forewing length of male and female butterflies.
-
-
-
-
+and rainfall doesn't have an effect on the forewing length of male and
+female butterflies. The null hypothesis goes against this and states
+that: the temperature and rainfall has an effect on the forewing length
+of male and female butterflies.
