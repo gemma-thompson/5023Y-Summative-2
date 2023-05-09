@@ -2,6 +2,10 @@ library(tidyverse)
 library(here)
 library(janitor)
 
+univoltine_butterfly <- ("/cloud/project/Data/univolutine_butterfly.csv")
+univoltine_butterfly <- read.csv("/cloud/project/Data/univolutine_butterfly.csv")
+head(univoltine_butterfly)
+
 # checking data is presented in a tidy format 
 head(univoltine_butterfly)
 
