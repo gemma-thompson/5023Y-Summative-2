@@ -1,7 +1,7 @@
 ---
 title: "univoltine_butterfly_Rmd"
 output:
-  html_document: default
+html_document: default
 date: "2023-04-30"
 ---
 
@@ -18,18 +18,23 @@ library(dplyr)
 library(knitr)
 library(ggpubr)
 library(patchwork)
+
+univoltine_butterfly <- ("cloud/project/Data/univolutine_butterfly.csv")
+univoltine_butterfly <- read.csv("cloud/project/Data/univolutine_butterfly.csv")
+View(univoltine_butterfly)
 ```
+
 
 ```{r plot 1}
 ggplot(univoltine_butterfly,
-       aes(forewing_length, rain_jun))+
+  aes(forewing_length, rain_jun))+
   geom_boxplot(aes(colour=sex))+
   ggtitle ("The length of male and female butterfly forewings during the rain in June")+
   labs(y = "Forewing Length", x = "Rain in June")+
   theme(title = element_text(size=7))
 ```
 
-This plot shows the length of male and female forewings in June is realtivley similar to each other shown by box plot graph displayed. Looking at the mean values we can see that females have a slightly forewing length of around 55mm, male butterfies being slightly shorter with a value of 50mm. 
+This plot shows the length of male and female forewings in June is realtivley similar to each other shown by box plot graph displayed. Looking at the mean values we can see that females have a slightly forewing length of around 55mm, male butterfies being slightly shorter with a value of 50mm.
 
 ```{r plot 2}
 ggplot(univoltine_butterfly,
@@ -96,7 +101,8 @@ ggplot(univoltine_butterfly)+
                "#CC6677"))+
   theme(title = element_text(size = 5))
 ```
-This graph shows that the forewing length of females is much longer than males and the data stays relatively consistent despite the fact that there is a distance of 100 years between the start and the end, this means that overall females have longer forewing length to males and it stayed consistent for 100 years, despite biological concepts such as evolution that would have taken place. 
+
+This graph shows that the forewing length of females is much longer than males and the data stays relatively consistent despite the fact that there is a distance of 100 years between the start and the end, this means that overall females have longer forewing length to males and it stayed consistent for 100 years, despite biological concepts such as evolution that would have taken place.
 
 ```{r plot 6}
 univoltine_butterfly %>%
@@ -110,6 +116,14 @@ univoltine_butterfly %>%
        y = "Rain in June",
        title = "How the rainfall in June changes over the period of 1880- 1975")+
   theme(title = element_text(size = 7))+
-  facet_wrap(~sex)
+  facet_wrap(~sex)+
+  stat_cor(method="pearson", aes(colour=sex))
 ```
-This graph shows that the female butterflies shows a bigger decrease 
+
+This graph shows that the female and male butterflies are relatively not affected by the rain during the month of June.
+
+\`\`\`{r plot 7} p1 \<- univolutine_butterfly %\>% ggplot(aes(x=jun_temp y=forewing_length))+ geom_point(aes(colour=species))+ scale_colour_manual(values= "lawngreen", "goldenrod")+ theme_minimal()+ labs = (x = "Mean temperature in June", y = "Forewing length", Title = "How temperature affects forewing length of male and female butterflies")
+
+p2 \<- univolutine_butterfly %\>% ggplot(aes(x=rain_jun, y=forewing_length))+ geom_point(aes(colour=sex))+ scale_colour_manual(values= "lawngreen", "goldenrod")+ theme_minimal()+ labs = (x = "Rain in June", y = "Forewing length", Title = "How rain affects forewing length of male and female butterflies")
+
+p3 \<- univolutine\_
