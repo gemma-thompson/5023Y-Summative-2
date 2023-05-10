@@ -26,14 +26,3 @@
 #on the forewing length of both male and female butterflies 
 
 
-```{r plot ?  }
-ggplot(univoltine_butterfly,
-       aes(forewing_length, rain_JUN))+
-  geom_boxplot(aes(colour=sex))+
-  ggtitle ("The length of male and female butterfly forewings during the rain in June")+
-  labs(y = "Forewing Length", x = "Rain in June")+
-  theme(title = element_text(size=7))
-geom_boxplot(aes(colour=sex))+
-  ggtitle ("The length of male and female butterfly forewings during the rain in June")+
-  labs(y = "Forewing Length", x = "Rain in June")+
-  theme(title = element_text(size=7))
