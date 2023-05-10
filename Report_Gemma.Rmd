@@ -1,0 +1,473 @@
+---
+title: "The effect that climate conditions have on male and female Silver Spotted Skipper butterflies"
+author: "Gemma Thompson"
+output:
+  pdf_document: default
+  html_document: default
+date: "2023-05-10"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r load packages, echo= FALSE, include = FALSE}
+# PACKAGES ----
+
+library(tidyverse)
+library(tidyr)
+library(readr)
+library(ggplot2)
+library(dplyr)
+library(knitr)
+library(ggpubr)
+library(patchwork)
+library(here)
+library(janitor)
+library(kableExtra)
+```
+
+```{r read data, 1, echo=FALSE, include =FALSE}
+univoltine_butterfly <- read.csv("Data/univoltine_butterfly.csv")
+head(univoltine_butterfly)
+```
+## Introduction
+This report looks into the universal ecological responses to climate change in univoltine butterflies. Univoltine species means that they only breed offspring once a year, in many cases for butterflies they are chrysalis over winter before emerging for the summer months according to the Amateur Entomologists' Society. This specific study is looking at museum specimens of the Silver Spotted Skipper, Hesperia comma, to look at how size and annual temperature vary.
+
+The Silver Spotted Skipper is an easy butterfly to identify to find as according to UK Butterfly, 2023 they are the only skipper that can be found in the British Isles that have distinctive white spots on the underside of their hindwings. The male and female butterflies are distinguished by the sex brand presented on their forewings - a line of specialized scent scales. 
+
+The status and the distribution of the Silver Spotted Skipper have posed interesting questions for conservationists and ecologists (Thomas et al, 1986). The improving status of this butterfly species is mainly down to good habitat management and climate warming which has improved the quality and increased the available habitats that are suitable. Hesperia comma female butterflies have specific ecological requirements when it comes to where they lay their eggs (individually on leaf blades of small tufts of F.ovina adjacent to the ground). Climate change in general, is most commonly known for so called destroying the planet that we live on today and therefore posing a threat to some of our most treasured species, however here we are presented with a species that is in fact going against this analogy and since early 2000's has had a large increase in its population (Davies et al, 2005). The time that these weather conditions were reported is June, just before their flight period takes place in July and September to allow their eggs to hatch the following March (Lawson et al, 2013).
+```{r tidying data, 2, echo=FALSE, include = FALSE}
+#checking the structure of the data 
+glimpse(univoltine_butterfly)
+```
+
+```{r tidying data, 3,  echo=FALSE, include = FALSE}
+#cleaning the column names
+univoltine_butterfly <- janitor::clean_names(univoltine_butterfly)
+```
+
+```{r tidying data, 4,  echo=FALSE, include = FALSE}
+#checking that there is no duplication within the data
+univoltine_butterfly %>% 
+  duplicated () %>%
+  sum()
+```
+
+```{r tidying data, 5, echo=FALSE, include = FALSE}
+#checking data for any impossible values and any typos that may have occurred within the data
+univoltine_butterfly %>%
+  group_by(sex)
+```
+
+```{r tidying data, 6, echo=FALSE, include = FALSE}
+#checking data for typos by looking at distinct characters / values
+univoltine_butterfly %>%
+  distinct(year)
+```
+
+```{r tidying data, 7, echo=FALSE, include = FALSE}
+univoltine_butterfly %>%
+  distinct(forewing_length)
+```
+
+```{r tidying data, 8, echo=FALSE, include = FALSE}
+univoltine_butterfly %>%
+  distinct(jun_mean) 
+```
+
+```{r tidying data, 9, echo=FALSE, include = FALSE}
+univoltine_butterfly %>%
+  distinct(rain_jun) 
+```
+
+```{r tidying data, 10, echo=FALSE, include = FALSE}
+#checking for any missing values
+univoltine_butterfly %>%
+  is.na() %>%
+  sum()
+```
+
+```{r tidying data, 12, echo=FALSE, include = FALSE}
+#quick summary 
+summary(univoltine_butterfly)
+
+#The point of tidying the data set is to make sure that all the data is presented in a way that is readable and clear to be able to then be presented in a variety of graph formats 
+# It also gives us an analysis of the data that we are dealing with and how it is formatted 
+```
+
+```{r, 1. exploratory data analysis, echo= FALSE, include = FALSE}
+#Exploring the data further than just the basic tidying allows us to visualize it
+
+#visualization of the data
+univoltine_butterfly %>%
+  ggplot(aes(x= sex,
+             y= year)) +
+  geom_point(colour="purple")+
+  labs(title = "Relationship between sex and year")
+#This graph shows the relationship between the sex and the year of the butterflies - the creation of the graph was to see if any further errors with the data, it highlighted an error with the sex that was therefore fixed due to the creation of this graph
+
+#The production of this graph highlighted the typos in the sex as males were sometimes spelt incorrectly and females were written singular and plural   
+#code to fix error to name two variables: "Male" and "Female"
+unique(univoltine_butterfly$sex)
+summary(univoltine_butterfly$sex)
+sum(is.na(univoltine_butterfly$sex))
+
+univoltine_butterfly$sex[univoltine_butterfly$sex=="Females"] <- "Female"
+univoltine_butterfly$sex[univoltine_butterfly$sex=="Maes"] <- "Male"
+univoltine_butterfly$sex[univoltine_butterfly$sex=="Males"] <- "Male"
+```
+
+```{r, 2. exploratory data analysis, echo=FALSE, include=FALSE}
+#When analyzing the data I am always comparing the variables I am looking at to the sex of the butterflies, therefore it is useful to look at their similarity to give us an idea as to whether one of the sexes is providing the majority of data compared to the other. It turns out in this that both are presenting nearly the same amount, meaning it is appropriate to compare against each other.
+table(univoltine_butterfly$sex)
+```
+
+```{r exploratory data analysis, echo=FALSE, include=FALSE}
+#comparing groups 
+summary<- univoltine_butterfly %>%
+  group_by(sex) %>%
+  summarise(mean=mean(forewing_length),
+            sd=sd(forewing_length)) %>% 
+  rename("forewing_length" = "mean")
+```
+
+```{r, 3. exploratory data analysis, echo=FALSE, include=FALSE}
+#In the forewing_length data there is an outlier that will affect graphs in my R.Markdown file as an anomaly data point is 
+#577.0 
+#To remove anomaly 
+univoltine_butterfly <- 
+  univoltine_butterfly %>% 
+  filter(rain_jun < 200)
+```
+
+```{r, 4. exploratory data analysis, echo=FALSE, include=TRUE}
+# the kable extra functions makes a nicer table 
+univoltine_butterfly %>%
+  kbl(caption="Summary statistics of Male and Female butterflies born in years ranging from 1880 - 1973") %>%
+  kable_styling(bootstrap_option ="striped", full_width = T, position = "left")
+```
+
+```{r, 5. exploratory data analysis, echo=FALSE, include=FALSE}
+# taking a closer look at the sex and the jun_mean
+#The creation of this graph was to again check for any further errors in the data that can be analysed through the creation of presenting the data visually. What all the graphs have in common so far is that they are comparing sex to all the variable values that are in the data set.
+univoltine_butterfly %>%
+  ggplot(aes(x=sex,
+             y=jun_mean,))+
+  geom_point(aes(colour=sex))+
+  geom_smooth(method="lm",
+              se=FALSE,
+              aes(colour=sex))+
+  labs(x="sex",
+       y="Mean temperature in June",
+       title = "Mean temperature in June for male and female butterflies")
+```
+
+```{r, 6. exploratory data analysis, echo=FALSE, include=FALSE}
+#taking a closer look at sex and rain_jun
+ggplot(data = univoltine_butterfly, aes(x = sex, y = rain_jun)) +
+  geom_boxplot(aes(fill = sex),
+               width = 0.5,
+               show.legend = FALSE)+
+  geom_jitter(aes(colour=sex),
+              width=0.2)+
+  theme(legend.position="none")+
+  labs(x="sex",
+       y="Forewing Length",
+       title = "Forewing length of male and female butterflies")
+#A number of graphs and tables were produced by looking at the sex and the different numerical 
+#data that is displayed in the data set, the point of producing these graphs was to make sure that
+#all the data is presented correctly and that there are no visual errors that can be seen when they are 
+#displayed. The only error that i came across was that the sex was written out incorrectly as there were four different columns, when the data should ideally be presented with just two as it is now. The variables were: Maes, Males, Female, Females and are now correctly Male and Female.
+#Differences and uncertainty in the data
+```
+
+```{r linear models, 1, echo= FALSE, include = FALSE}
+#Creation of linear model 
+lsmodel0 <- lm(formula = forewing_length ~ 1 , data = univoltine_butterfly)
+summary(lsmodel0)
+mean(univoltine_butterfly$forewing_length)
+```
+ 
+```{r linear models, 2, echo= FALSE, include =FALSE}
+lsmodel1 <- lm(forewing_length ~ sex, data = univoltine_butterfly)
+broom::tidy(lsmodel1)
+# Due to the fact that the second row shows a negative value it means that it refers to the
+#difference in the mean of the two groups
+univoltine_butterfly %>%
+  group_by(sex) %>%
+  summarise(mean=mean(forewing_length))
+```
+
+```{r linear models, 3, echo= FALSE, include = FALSE}
+summary(lsmodel1)
+#From this summary we can take that the the standard error or rain_jun is 0.143941
+#and the standard error difference is 0.001527. The estimate of the intercept mean  
+#is 13.723480 
+#Creation of linear model summary for lsmodel1 - this shows many different values to provide us with a good overview of the data which shows the model formula: "data = univoltine_butterfly". It then shows the standard error value of 0.9062, this value is small which suggests that the sample size is a more accurate estimate. It provides information on how the sample statistic can vary between the samples. The estimate of intercept mean is 14.30458 and the estimate of difference between means is -1.33552 which shows the differences in the means. 
+```
+ 
+```{r linear models, 4, echo= FALSE, include = FALSE}
+broom::tidy(lsmodel1, conf.int=T)
+GGally::ggcoef_model(lsmodel1,
+                     show_p_values = FALSE,
+                     conf.level = 0.70)
+#The hypothesis that i created for this specific graph was: sex does change the length of the butterfly wings. The null hypothesis for this graph therefore goes against this and claims that: sex does not change the length of the butterfly wings. The results from the creation of the graph show that  the upper and lower bounds of the confidence intervals don't cross zero, the difference in butterfly length is consistent. We can accept the hypothesis which means that can we reject the null hypothesis.
+#This graph shows that the upper and lower bounds of the confidence intervals don't cross 
+#zero, the difference in butterfly length is consistent. We can accept the hypothesis which means
+#that can we reject the null hypothesis
+
+```
+
+```{r linear models, 5,  echo= FALSE, include = FALSE}
+broom::tidy(lsmodel1, conf.int = T, conf.level = 0.99)
+#This graph was created using the emmeans function. The reason why it is good to use the emmeans function is because it calculates the estimated means of a response variable at different levels of one or more of the predictor variables but at the same time it also counts for other predictor variables that are in the model. 
+
+#argument to support this
+means <- emmeans::emmeans(lsmodel1, specs = ~ sex)
+means %>%
+  as_tibble() %>%
+  ggplot(aes(x=sex,
+             y=emmean))+
+  geom_pointrange(aes(
+    ymin=lower.CL,
+    ymax=upper.CL
+  ))
+```
+
+```{r linear models, 6, echo= FALSE, include = FALSE}
+#Assumption checking - check the assumptions of the model are adequately met so we know
+#if analysis can be trusted. 
+#Assumption checking - check the assumptions of the model are adequately met so we know if analysis can be trusted. This shows that we can in fact trust the data that we are handling during the report. The Linearity model shows that the data does not quite match up to the flat horizontal line as it is shown to be below it, and the influential observations graph shows that the points are not quite inside the contour lines, behind slightly higher, however overall the rest of the graphs show data that show the expected results. 
+performance::check_model(lsmodel1)
+```
+
+```{r linear models, 7, echo= FALSE, include = FALSE}
+#Normal distribution
+#checking whether the residual in the data is approximately normally distributed 
+#Plot 1 is the graph on the left and plot 2 is the graph on the right of the image. It is important to check the normal distribution of graphs to make sure that the residual in the data is approximately normally distributed. The differences that are observed between the observed values and the fitted values are known as the residuals. As we can see here the dots fall nearly exactly along the line in plot 1 and the distribution is just slightly off from the curve shown in plot 2, meaning that we can conclude that the residuals in the data are approximately normally distributed. The data is symmetrically distributed with no skew. 
+performance::check_model(lsmodel1, check = c("normality", "qq"))
+```
+
+```{r linear models, 8,  echo= FALSE, include = FALSE}
+#Quantile-Quantile plot
+#A Quantile-quantile plot (QQ plot) checks whether a sample distribution is the same as another by distributing the data in the model on the y axis and on the x-axis a theoretical normal distribution. Both of the axis have the same values and they meet in the middle of the graph forming a near perfect diagonal line proving that the data follows a normal distribution.
+plot(lsmodel1, which=c(2,2))
+```
+
+```{r linear models, 9, echo= FALSE, include = FALSE}
+plot(lsmodel1, which=c(1,3))
+#Still using the lsmodel1 linear model created I can asses if variances are equal by plotting the residuals of the data against the predicted values (known as fitted values shown on the x axis). This is shown in plot 1 (Residuals vs Fitted graph). The residuals are zero which shows that the data matches the estimates perfectly and there are no errors. Plot 2 (Scale-Location graph) then shows if the residuals are equally spread along the ranges of predictors - this graph shows the outcome that you look for with this kind of plot, it shows a horizontal line with points that are equally (but randomly) spread. 
+```
+
+```{r linear models, 10, echo= FALSE, include = FALSE}
+#outliers
+performance::check_model(lsmodel1, check="outliers")
+#the outliers are potentially affecting estimates of error that can be made from the data
+#By using the check_models function it creates a plot to show 'standardized residuals'. The standardized residual can be found by dividing the difference of the observed values and the expected values by the square root of expected value.
+```
+
+```{r linear models, 11,  echo= FALSE, include = FALSE}
+# Cooks distance
+#A cooks distance graph is a  measure of how much 'leverage' a single data point exerts on the model, if too high then it is having an outsized effect on the estimates. It can help to detect observations that strongly influence the data set. 
+plot(lsmodel1, which=c(4,4))
+#this shows that there are three main outliers that have been highlighted with numbers above them - these are influential 
+#data points for forewing_length and sex 
+#In the forewing_length data there is an outlier that will affect graphs in my R.Markdown file as an anomaly data point is 
+#577.0 
+#To remove anomaly 
+univoltine_butterfly <- 
+  univoltine_butterfly %>% 
+  filter(rain_jun < 200)
+```
+
+```{r linear models, 12, echo= FALSE, include = FALSE}
+#ANOVA
+#The ANOVA table can help with analyzing effects where there are two or more levels. Things to highlight about this table are the second column that tells us the degrees of freedom, the first row is the number of predictors and the second row is the residual degrees of freedom. 
+anova(lsmodel1)
+```
+
+## Analysis
+In order to analyse and explore my data further I created a least-squares model 1 (lsmodel1), this is a linear model using forewing_length as the numerical value and sex as the interaction term as this was the best suited to use. A linear model is often made so that one can better describe mathematical relationships and make predictions from the data. It provides a better understanding behind the biological relationship that the forewing length and the sex of the butterfly have and provides deeper knowledge of the data that is presented. The R version used is R.4.2.3. A variety of packages were used in order to complete my lsmodel1 including the emmeans package that calculates the 95% confidence intervals, the GGally function in order to create attractive scatter plots and the performance function to compare the observed and inferred outputs for this data set. I created plots such as the Quantile-Quantile plot to look at the quantiles of the first data set compared to the quantiles of the second data set and Cooks distance plot that identifies any outliers in the X variables. 
+
+## Main Hypothesis
+After analysis of some of the data through the lsmodel1 we can determine that although not totally perfect, our data set is reasonably accurate in aspects - the linear models make a diverse range of assumptions about the data set, which provides further hidden information that I couldn't have gained from looking at the table of data itself.
+
+All together, this has allowed for the creation of the main hypothesis and null hypothesis I will be working towards throughout this report, as well as considering already published data about Silver Spotted Skipper butterflies:
+Hypothesis:  The temperature and rainfall doesn't have an effect on the forewing length of male and female butterflies.
+Null Hypothesis: The temperature and rainfall has an effect on the forewing length of male and female butterflies.
+It can also be expressed as two other hypothesis that we can explore within the main hypothesis:
+1. The temperature in June affects the rainfall and therefore the number of male and female butterflies
+2. The rainfall in June across different years affects the number of male and female butterflies
+
+```{r plot 1 , echo= FALSE, include = TRUE}
+ggplot(univoltine_butterfly,
+       aes(forewing_length, rain_jun))+
+  geom_boxplot(aes(colour=sex))+
+  ggtitle ("The length of male and female butterfly forewings during the rain in June")+
+  labs(y = "Forewing Length", x = "Rain in June")+
+  theme(title = element_text(size=7))
+```
+
+Figure 1: This plot shows the length of male and female forewings in June is realtivley similar to each other shown by box plot graph displayed. Looking at the mean values we can see that females have a slightly larger forewing length of around 55mm, male butterflies being slightly shorter with a value of 50mm. This helps to identify their similarities and differences. 
+
+```{r plot 2, echo= FALSE, include = TRUE}
+ggplot(univoltine_butterfly,
+       aes(x=jun_mean,
+           colour=sex))+
+  geom_density(
+    alpha=0.7)+
+  labs(y = "Density",
+       x = "Mean temperature in June",
+       title = "Male and female butterflies in different temperatures in June")+
+  scale_colour_manual(
+    values = c("#117733",
+               "#332288",
+               "#CC6677"))+
+  theme_classic()+
+  theme(legend.position = "right")+
+  theme(title = element_text(size = 7))
+```
+
+Figure 2: This plot shows the density of male and female butterflies in the month of June. It shows that at temperatures around 12-14 degrees Celsius there are more male butterflies providing data of forewing length, but then at around 14-15.5 degrees Celsius there are nearly double the amount of female to male butterflies. As the temperature then drops to 16 degrees Celsius the number of male butterflies increases. This shows that when we are studying temperature females provide more data than males do around the medium temperatures in June. 
+
+```{r plot 3, echo= FALSE, include = TRUE}
+ggplot(univoltine_butterfly,
+       aes(x = jun_mean,
+           y = rain_jun,
+           colour = sex))+
+  geom_point()+
+  labs(x = "Mean June Temperature",
+       y = "Rain in June",
+       title = "How the mean temperature in June affects rainfall for male and female butterflies")+
+  scale_colour_manual(values = c("#CC6677",                               "#332288"))+
+  theme(title = element_text(size = 6))+
+  stat_cor(method="pearson", aes(colour=sex))
+```
+
+Figure 3: This plot shows how the temperature in June affects the rainfall in June for male and female butterflies. Both the R values are negative indicating a negative correlation, meaning the values of one variable increase when the values of the other variable decrease. Both R values are close to zero, females have a closer R value to zero than the males do with an R value of -0.12, compared to the males who's R value is -0.31 meaning females have a weaker linear relationship than the male butterflies do. The p value gives a further understanding as to whether we can conclude that the correlation coefficient is different from zero, and from what we can observe the female butterflies has the furtherst away value from zero. The p value indicates whether or not a correlation will be statistically significant. One of the P values is presented as a negative value (-0.31 for females) and the other is presented as a positive value (0.11 for males). One of the p values is above 0.05 and the other p value is below 0.05, this means that for females we accept the null hypothesis meaning that the rainfall in June doesn't affect the number of female butterflies and for males, because the value is above 0.05 we reject the null hypothesis, claiming that the rainfall in June does affect the number of male butterflies. 
+
+```{r plot 4, echo= FALSE, include = TRUE}
+ggplot(univoltine_butterfly)+
+  geom_smooth(aes(x = jun_mean,
+           y = forewing_length,
+           colour = sex))+
+  labs(y = "Forewing Length",
+       x = "Mean temperature in June",
+       title = "Identifying how the mean temperature in June affects forewing length in male and female butterflies")+
+  scale_colour_manual(
+    values = c("#117733",
+               "#332288"))+
+  theme(title = element_text(size = 4))
+```
+
+Figure 4: This graph shows the relationship between the mean temperature in June and the forewing length of male and female butterflies. Visually the graph shows that as mean temperature increases the forewing length of both male and female butterflies also increases. As the temperature reaches around 15 degrees, it continues to increase for males but for females we can see where it starts to decrease. Looking at this data alone we can see that it is accepting the null hypothesis as it shows that the increase in temperature results in an increase in the forewing length. It also provides information on the fact that female butterflies have overall longer forewing length to the male butterflies. 
+
+```{r plot 5, echo= FALSE, include = TRUE}
+ggplot(univoltine_butterfly)+
+  geom_col(aes(x = year,
+           y = forewing_length,
+           colour = sex))+
+  labs(y = "Forewing Length",
+       x = "Year",
+       title = "Looking at the forewing length of male and female butterflies across period of 1880-1973")+
+  scale_colour_manual(
+    values = c("#117733",
+               "#CC6677"))+
+  theme(title = element_text(size = 5))
+```
+
+Figure 5: This graph shows that the forewing length of females is much longer than males and the data stays relatively consistent despite the fact that there is a distance of 100 years between the start and the end, this means that overall females have longer forewing length to males (supporting the evidence that we collected in the graph above) and it stayed consistent for 100 years, despite biological concepts such as evolution that would have taken place during this time. The majority of male and female values are consistent through the years, even though the female forewing length values range more as they range from their lowest value being around 14 mm, to their highest value being around 28mm, they are still relatively similar which could provide evidence that we can reject the null hypothesis because temperature doesnt have an effect on forewing length. 
+
+```{r plot 6, echo= FALSE, include = TRUE}
+univoltine_butterfly %>%
+  ggplot(aes(x = year,
+             y = rain_jun,
+             colour = sex))+
+  geom_point()+
+  geom_smooth(method="lm",
+              se = FALSE)+
+  labs(x = "Year",
+       y = "Rain in June",
+       title = "How the rainfall in June changes over the period of 1880- 1975")+
+  theme(title = element_text(size = 7))+
+  facet_wrap(~sex)+
+  stat_cor(method="pearson", aes(colour=sex))
+```
+
+Figure 6: This graph shows that the female and male butterflies are relatively not affected by the rain during the month of June. The R values for both are negative which indicates a negative correlation, this means that as the values of one variable increase the value of the other variable decrease for both male and female. Both the R values for male and female are close to zero, the male butterflies have a closer R value to zero with the number -0.0032 and the females is slightly larger with a value of -0.12. This defines that the male butterflies have a weaker linear relationship to the rain in June than female butterflies do. The P value indicates whether a correlation will be statistically significant. Both of these p values are positive and both p values are above 0.05 (<0.05) because female butterflies p value is 0.54 and male p value is 0.87. This means that we consider this study as positive and means that the test hypothesis is false and should be rejected and therefore we should accept the null hypothesis for both male and female butterflies. 
+
+```{r plot 7, echo=FALSE, include=TRUE}
+ggplot(univoltine_butterfly,
+       aes(x = jun_mean,
+           y = forewing_length,
+           colour = sex))+
+  geom_point()+
+  labs(x = "Mean June Temperature",
+       y = "Forewing Length",
+       title = "How the mean temperature in June affects forewing length for male and female butterflies")+
+  scale_colour_manual(values = c("chocolate1",                               
+                                 "darkcyan"))+
+  theme(title = element_text(size = 6))+
+  stat_cor(method="pearson", aes(colour=sex))
+```
+
+Figure 7: This plot is showing how the temperature in June affects the forewing length of male and female butterflies. The R value for both male and females is positive which means that it indicates a positive correlation, a positive correlation means that when one variable increases so does the other, or when one variable decreases so does the other. Both R values for male and female are close to zero, the female butterflies have a closer R value to zero with a value of 0.27 and males have a slightly larger value of 0.62. This means that they have a strong linear relationship. The P value is indicating, as already stated above, whether a correlation will be statistically significant. Both of these p values are positive, one being above 0.05 and the other being below this. For male butterflies, they have a p value of 0.62 meaning that they have a value above 0.05, this means that we consider this study for male butterflies as positive and means the test hypothesis is false and should be rejected and therefore we should accept the null hypothesis. For female butterflies their value is below 0.05 (0.00053) - this means that we reject the null hypothesis and we accept the test hypothesis. 
+```{r plot 8, echo= FALSE, include = TRUE}
+univoltine_butterfly %>%
+  ggplot(aes(x = rain_jun,
+             y = forewing_length,
+             colour = sex))+
+  geom_point()+
+  geom_smooth(method="lm",
+              se = FALSE)+
+  labs(x = "Rain in June",
+       y = "Forewing Length",
+       title = "How the rainfall in June affects forewing length for male and female butterflies")+
+  theme(title = element_text(size = 7))+
+  facet_wrap(~sex)+
+  scale_colour_manual(values=c("darkred", "darkblue"))+
+  stat_cor(method="pearson", aes(colour=sex))
+```
+
+Figure 8: This graph shows how the rainfall in June affects the forewing length of male and female butterflies. The R value for female butterflies is positive (0.1) which means it indicates a positive correlation, this that as the values of one variable increase, so does the values of the other variable and it means that as the values of one variable decrease so does the values of the other variable. For male butterflies the R value is negative (-0.17) which means that it indicates a negative correlation, this means that as the values of one variable increases the value of the other variable decreases. The closer to zero the value is the weaker the linear relationship which means that females have the weaker linear relationship. The P values for male and female are both positive and are both above the value 0.05, because of this it means that we consider this study as positive and means that the test hypothesis is false and should be rejected and therefore we should accept the null hypothesis for both male and female butterflies.
+
+
+## Results and Discussion
+After the creation of multiple different graphs, it provides us with more detail around the data and the results to the hypothesis that were created in the introduction of the report. Part of the hypothesis that I investigated whether the temperature affected the rainfall in June for male and female butterflies. All the graphs in this report were created with a 95% confidence interval. The scatter plot created, figure 3, shows that we can say that female butterflies P value presented a value of -0.31, a statistically significant test result below 0.05, so we can accept the null hypothesis and reject the test hypothesis, temperature has no effect on rain and female butterflies. However for male butterflies they presented a P value that was above 0.05, a non-signicant test result, meaning that we can reject the null hypothesis and accept the test hypothesis that tells us that the temperature does affect rainfall and male butterflies. The R values for both male and female butterflies was negative meaning that this indicates a negative correlation. 
+
+Figure 6 looks at the effect that just rain alone has on female and male butterflies. Both of the P values for male and female butterflies were positive, for males the P value was a statistically non-significant test result above 0.05 - 0.87 and for females it was the same - 0.54. This result means we can consider this a positive study and we can reject the test hypothesis initially presented in the introduction of this report and accept the null hypothesis that rain has no effect on male and female butterflies during the month of June. The R values for male and female butterflies were both negative, meaning that this indicates a negative correlation.
+
+The main hypothesis that I was being tested throughout this study was proving whether the temperature and rainfall had an effect on the forewing length of both male and female butterflies. The hypothesis in the introduction of this report claims that temperature and rainfall don't have an effect on the forewing length. Figure 7 was created in order to determine whether the temperature during the month of June affected the forewing length of male and female butterflies - the P value  both male butterflies on this scatter plot was a statistically non-significant test result above 0.05 (0.62), resulting in for male butterflies this being a positive study and the test hypothesis can be rejected and the null hypothesis accepted, the temperature has an effect on the forewing length of male butterflies. For female butterflies in figure 7 their P value is a statistically significant result that is below 0.05 (0.00053), therefore meaning that we reject the null hypothesis and accept the test hypothesis that temperature doesnt have an effect on the forewing length of females, making this significant. The R value for both male and female butterflies is positive, 0.27 for females and 0.62 for males meaning that it shows a positive correlation for both butterfly sexes.
+
+Figure 8 is the last figure that i presented in the report and it shows how the rainfall in June affects the forewing length of male and female butterflies. Both of the P values for male and female butterflies are positive and are both statistically non-significant test results above 0.05, females value is 0.58 and males value is 0.4. Due to this it means that the test hypothesis is false and should be rejected and we should accept the null hypothesis, resulting in the rainfall having an effect on forewing length for male and female butterflies. The relationship between female butterflies forewing length and rainfall showed a positive correlation, however the relationship between male butterflies forewing length and rainfall showed a negative correlation. 
+
+## Conclusion
+To conclude this report, another study that was undertaken discussed that June temperatures are important for predicting adult male wing length. This is part of the reason why I decided to make the main hypothesis for this study about looking at the forewing length of both male and female butterflies and how these are affected by both the temperature and the rain (Fenberg et al, 2016). Temperature-induced alterations to body size and phenology are common responses to climate change. A study undertaken found that wing length increased as temperatures increased at certain distinct points in the early and midpupal periods (Davies, 2019). Another study undertaken provided general background information to insects stating that theychange phenology in response to how much climate warming they experience and how through evolution they adapt (Buckley et al, 2022). Understanding the concepts behind the climate change that is adapting the life of Silver Spotted Skipper butterflies is incomplete due to a limited knowledge of how and if the adaption are taking place, hence the importance of this study in adding to the global research needed to help this species overall survival (Berrang-Ford et al, 2011). 
+
+The conclusion of this study matched with what was found in the study that was presented above, as it shows that temperature has an affect in June on the forewing length of male butterflies but not the female butterflies. It also showed that rainfall has an effect on the forewing length of both male and female butterflies. 
+
+
+## Reference List
+Amateur Entomologists' Society; Univoltine; Accessed: 10th May 2023
+
+Berrang-Ford, L., Ford, J.D. and Paterson, J., 2011. Are we adapting to climate change?. Global environmental change, 21(1), pp.25-33.
+
+Davies, W.J., 2019. Multiple temperature effects on phenology and body size in wild butterflies predict a complex response to climate change. Ecology, 100(4), p.e02612.
+
+Davies, Z.G., Wilson, R.J., Brereton, T.M. and Thomas, C.D., 2005. The re-expansion and improving status of the silver-spotted skipper butterfly (Hesperia comma) in Britain: a metapopulation success story. Biological Conservation, 124(2), pp.189-198.
+
+Fenberg, P.B., Self, A., Stewart, J.R., Wilson, R.J. and Brooks, S.J., 2016. Exploring the universal ecological responses to climate change in a univoltine butterfly. Journal of Animal Ecology, 85(3), pp.739-748.
+
+Lawson, C.R., Bennie, C.D., Thomas, J.A., Hodgson, T., Bernhard, P.A., Budd, A., Daish, A., Edwards, M., Gray, T., Holloway, C. and Hoyes, R., 2013. The status and conservation of the silver-spotted skipper Hesperia comma in South-East England 2000-2009. University of Exeter, Exeter, UK.
+
+Thomas, J.A., Thomas, C.D., Simcox, D.J. and Clarke, R.T., 1986. Ecology and declining status of the silver-spotted skipper butterfly (Hesperia comma) in Britain. Journal of applied Ecology, pp.365-380.
+
+UK Butterflies; 2023; Silver Spotted. Skipper, Hesperia Comma, Accessed: 10th May 2023
+
+
+
+
+
+
+
