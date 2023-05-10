@@ -1,9 +1,11 @@
 ---
 title: "Univolutine butterflies"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 date: "2023-05-03"
-editor_options: 
-  markdown: 
+editor_options:
+  markdown:
     wrap: 72
 ---
 
@@ -44,9 +46,14 @@ Firstly i created a box plot graph looking at the length of male and female butt
 
 The next graph is a line graph and looks at the density of male and female butterflies in the month of June. It shows that there is a higher density of male butterflies providing data of forewing length at around 12 - 14 degrees Celsius, however then from around 15.5 - 16 degrees Celsius when there are more males present. As the temperature decreases they become relatively similar.
 
-The scatter plot shows how the temperature affects the temperature affects the rain in June for male and female butterflies, paying close attention to the p and the r values. The negative r values for both male and female butterflies (-0.12 for females and -0.3 for males) indicates a negative correlation, when the values of one variable increase the values of the other variables decrease. Both the R values are close to zero, the female butterflies value is closer to zero than males. The R value indicates a weak linear relationship. The P value is...
+The scatter plot shows how the temperature affects the temperature affects the rain in June for male and female butterflies, paying close attention to the p and the r values. 
 
-The second line graph produced shows the relationship between the temperature in June and the length of male and female butterfly forewings. It shows that females have longer forewing length than males across the years - and that the males is genuinly consistent...
+The next plot  is a line graph produced shows the relationship between the temperature in June and the length of male and female butterfly forewings. It shows that females have longer forewing length than males across the years - and that as temperature increases so does forewing length.
 
+I then created a bar graph to show the relationship between forewing length and the year of male and female butterflies.
+
+I finally finished this off with three scatter plots, one to show the relationship between male and female butterflies and their year and rain in June and the next two to look into the main hypothesis, therefore looking at forewing length og male and female butterflies with temperature and rain in June.
+
+I used R version 4.2.3
 
 
