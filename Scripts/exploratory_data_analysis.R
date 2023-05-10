@@ -87,7 +87,38 @@ ggplot(data = univoltine_butterfly, aes(x = sex, y = rain_jun)) +
 
 #Differences and uncertainty in the data
 
+p1 <- univoltine_butterfly %>%
+  ggplot(aes(x=forewing_length,
+             y=rain_JUN))+
+  geom_point(aes(colour=sex))+
+  scale_colour_manual(values = "gold2",
+                      "lawngreen")+
+  labs(x = "Forewing Length",
+       y = "Rain in June ",
+       title = "How the Rain in June affects forewing length for male and female butterflies")+
+  theme_minimal()
 
+p2 <- univoltine_butterfly %>%
+  ggplot(aes(x =forewing_length,
+             y = JUN_mean))+
+  geom_point(aes(colour=sex))+
+  scale_colour_manual(values="gold2",
+                      "lawngreen")+
+  labs(x = "Forewing Length",
+       y = "Temperature in June",
+       title="How the temperature in June affects forewing length for male and female butterflies")+
+  theme_minimal()
+
+p3 <- univoltine_butterfly %>%
+  group_by(sex, year) %>%
+  summarise(n=n()) %>%
+  drop_na(sex) %>%
+  ggplot(aes(fill=sex, y=n))+
+  geom_col(aes(fill=sex),
+           width = 0.8,
+           position = position_dodge(width=0.9),                                                                                                            
+           alpha = 0.6)+
+  scale_fill_manual(values=c("darkorange1", "azure4"))
 
 
 
