@@ -80,6 +80,17 @@ univoltine_butterfly <-
   filter(rain_jun < 200)
 
 
+p3 <- univoltine_butterfly %>%
+  group_by(sex, year) %>%
+  summarise(n=n())))+
+  drop_na(sex) %>%
+  ggplot(aes(fill=sex, y=n))+
+  geom_col(aes(fill=sex),
+           width = 0.8,
+           position = position_dodge(width=0.9),                                                                                                            
+           alpha = 0.6)+
+  scale_fill_manual(values=c("darkorange1", "azure4"))
+
 
 
 
