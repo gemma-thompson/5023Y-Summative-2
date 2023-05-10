@@ -36,8 +36,9 @@ library(emmeans)
 library(performance)
 
 Using all three scripts and analysing the data i used these graphs to
-create a hypothesis for my Markdown file. Hypothesis: The temperature
-and rainfall doesn't have an effect on the forewing length of male and female butterflies. The null hypothesis goes against this and states that: the temperature and rainfall has an effect on the forewing length of male and female butterflies.
+create a hypothesis for my Markdown file:
+Hypothesis: The temperature and rainfall doesn't have an effect on the forewing length of male and female butterflies. 
+The null hypothesis goes against this and states that: the temperature and rainfall has an effect on the forewing length of male and female butterflies.
 
 Firstly i created a box plot graph looking at the length of male and female butterfly wings during the rain in June. The point of creating this box plot graph is to show the mean of the forewing length for male and female butterflies to identify either their similarity or differences - it shows that the mean values are similar, however female butterflies have slightly larger forewings with their mean value being around 55 mm and the mean of male butterflies being around 50 mm.
 
